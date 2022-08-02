@@ -1,6 +1,6 @@
 clear all
 
-% This file shows how to use process rosbag files in matlab. The script
+% This file shows how to process rosbag files in matlab. The script
 % loads 4 files from the Precision dataset/Data (July 2021)/Day 1 and then 
 % plots the gps coordinates in cartesian space
 
