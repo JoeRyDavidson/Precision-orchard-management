@@ -5,9 +5,13 @@ This repository contains assorted files used to support precision orchard manage
 - precisionBag.m is example Matlab code for extracting and processing GNSS data from rosbag files
 - gnss_sd_logger.ino is a program for recording RTK GPS data using a portable, microcontroller-based system; the adopted architecture is described in further detail below
 
-We developed a small, portable system for recording RTK GPS data in agricultural environments. The system's architecture is shown in this block diagram.
+We developed a small, portable system for recording RTK GPS data in agricultural environments. The system's architecture is shown in the following block diagram.
 
 <img width="3563" height="935" alt="GnnsArchitecture" src="https://github.com/user-attachments/assets/85d049e4-f161-4622-be07-0dc0ce321e17" />
+
+The enclosure and hardware design are also shown here
+
+<img width="2475" height="1856" alt="Picture1" src="https://github.com/user-attachments/assets/81da53a8-0842-41a0-9c3a-c7f8178a1991" />
 
 A few 'low-level' lessons learned during development (July 2026):
 - The Sparkfun BlueSmirf v2 arrived from Amazon without firmware installed. Hold down the module's pair button while powering on to enter bootloading mode. Use a Sparkfun serial basic device to flash the firmware, following the steps online from Sparkfun (Claude assisted with this step). After the firmware is uploaded, put the Bluesmirf in low energy (BLE) mode using AT commands (only required if using an ios device). 
