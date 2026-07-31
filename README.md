@@ -11,7 +11,8 @@ We developed a small, portable system for recording RTK GPS data in agricultural
 
 The enclosure and hardware design are also shown here
 
-<img width="2475" height="1856" alt="Picture1" src="https://github.com/user-attachments/assets/81da53a8-0842-41a0-9c3a-c7f8178a1991" />
+<img width="2313" height="1734" alt="Picture2" src="https://github.com/user-attachments/assets/05ce00ba-c273-4d6e-a649-94351510f6e3" />
+
 
 A few 'low-level' lessons learned during development (July 2026):
 - The Sparkfun BlueSmirf v2 arrived from Amazon without firmware installed. Hold down the module's pair button while powering on to enter bootloading mode. Use a Sparkfun serial basic device to flash the firmware, following the steps online from Sparkfun (Claude assisted with this step). After the firmware is uploaded, put the Bluesmirf in low energy (BLE) mode using AT commands (only required if using an ios device). 
