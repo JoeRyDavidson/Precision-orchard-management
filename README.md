@@ -13,7 +13,6 @@ The enclosure and hardware design are also shown here
 
 <img width="2313" height="1734" alt="Picture2" src="https://github.com/user-attachments/assets/05ce00ba-c273-4d6e-a649-94351510f6e3" />
 
-
 A few 'low-level' lessons learned during development (July 2026):
 - The Sparkfun BlueSmirf v2 arrived from Amazon without firmware installed. Hold down the module's pair button while powering on to enter bootloading mode. Use a Sparkfun serial basic device to flash the firmware, following the steps online from Sparkfun (Claude assisted with this step). After the firmware is uploaded, put the Bluesmirf in low energy (BLE) mode using AT commands (only required if using an ios device). 
 - The BlueSmirf is not discoverable through the iphone’s settings menu. Need to connect to the module through the LightBlue iOS app; verify that you can write and subscribe to the GNSS receiver on 2 peripherals (you should see the NMEA messages coming in if there is a valid connection). Afterwards, disconnect from LightBlue; the BlueSmirf should now be discoverable through SW Maps.
@@ -22,5 +21,6 @@ A few 'low-level' lessons learned during development (July 2026):
 - Updating and saving the receiver configuration in u-center can be tricky. Make sure that it gets saved to permanent memory. 
 - Establish a standard 3D fix and let it stabilize for a minute before attempting an RTK fix.
 - Using I2C and an Arduino Mega with the Sparkfun library to communicate with the receiver was pretty seamless. I used the 3.3 V pin on the Arduino for power to the receiver. The board processes the RTCM corrections received over BLE (UART2) automatically. An RTX fix was maintained for about 20 minutes. Note, the Arduino Mega was replaced with a Sparkfun Thing Plus ESP32 Wroom, which has onboard Bluetooth, in the final prototype.
+- The microSD card is not accessible if the Sparkfun Thing Plus is mounted to a breadboard. My workaround was to use a microSD card cable extender, but make sure the extender doesn't have a connector that interferes with the USB C cable! 
 
 
