@@ -13,7 +13,7 @@ The system's architecture is shown in the following block diagram.
 
 The enclosure and hardware design are also shown here
 
-<img width="2313" height="1734" alt="Picture2" src="https://github.com/user-attachments/assets/05ce00ba-c273-4d6e-a649-94351510f6e3" />
+<img width="2316" height="1734" alt="Picture1" src="https://github.com/user-attachments/assets/7470b157-937b-4fd9-a2cb-131ca9497d57" />
 
 A few 'low-level' lessons learned during development (July 2026):
 - The Sparkfun BlueSmirf v2 arrived from Amazon without firmware installed. Hold down the module's pair button while powering on to enter bootloading mode. Use a Sparkfun serial basic device to flash the firmware, following the steps online from Sparkfun (Claude assisted with this step). After the firmware is uploaded, put the Bluesmirf in low energy (BLE) mode using AT commands (only required if using an ios device). 
