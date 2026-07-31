@@ -5,7 +5,9 @@ This repository contains assorted files used to support precision orchard manage
 - precisionBag.m is example Matlab code for extracting and processing GNSS data from rosbag files
 - gnss_sd_logger.ino is a program for recording RTK GPS data using a portable, microcontroller-based system; the adopted architecture is described in further detail below
 
-We developed a small, portable system for recording RTK GPS data in agricultural environments. The system's architecture is shown in the following block diagram.
+We developed a small, portable system for recording RTK GPS data in agricultural environments.
+
+The system's architecture is shown in the following block diagram.
 
 <img width="3563" height="935" alt="GnnsArchitecture" src="https://github.com/user-attachments/assets/85d049e4-f161-4622-be07-0dc0ce321e17" />
 
