@@ -1,4 +1,3 @@
-// To DO: add section for the button that states if there is a tree missing. This will be on the next iteration: 
 #include <Arduino.h>
 #include <Wire.h>
 #include <vl53l4cd_class.h>
@@ -10,6 +9,7 @@
 #define DEV_I2C    Wire
 #define SerialPort Serial
 #define HALL_PIN   4
+#define BTN_PIN    27
 
 VL53L4CD tof(&DEV_I2C, -1);
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &DEV_I2C);
@@ -21,6 +21,16 @@ volatile uint32_t lastCutMs = 0;
 const uint32_t CUT_DEBOUNCE_MS = 150;
 uint32_t lastPrintedCount = 0;
 
+// --- Marker button ---
+const uint16_t BTN_DEBOUNCE_MS = 50;
+bool     btnLast       = HIGH;    // INPUT_PULLUP idles HIGH
+uint32_t btnLastChange = 0;
+bool     markPending   = false;   // set on press, cleared once logged
+uint32_t markCount     = 0;       // running total of presses
+// basically the button will read 0 when not pressed and 1 when you press it, then return back to 0
+// i have also a aprt that counts how many times that button has been pressed 
+
+
 const uint32_t SAMPLE_PERIOD_MS = 33;   // ~30 Hz (1000/33 = 30.3) basically about 30
 uint32_t lastSample = 0;
 
@@ -29,6 +39,22 @@ void IRAM_ATTR onCut() {
   if (now - lastCutMs > CUT_DEBOUNCE_MS) {
     cutCount++;
     lastCutMs = now;
+  }
+}
+
+// Runs every pass through loop(), not on the 33 ms schedule,
+// so a quick press can't fall between samples.
+void pollButton() {
+  uint32_t now = millis();
+  bool level = digitalRead(BTN_PIN);
+
+  if (level != btnLast && (now - btnLastChange) > BTN_DEBOUNCE_MS) {
+    btnLastChange = now;
+    btnLast = level;
+    if (level == LOW) {           // pressed: pin pulled down to GND
+      markPending = true;
+      markCount++;
+    }
   }
 }
 
@@ -70,11 +96,19 @@ void setup() {
 
   // --- Hall sensor (active-low module) ---
   pinMode(HALL_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(HALL_PIN), onCut, FALLING);  
+  attachInterrupt(digitalPinToInterrupt(HALL_PIN), onCut, FALLING);
+
+  // --- Marker button: one leg to GPIO 27, diagonal leg to GND ---
+  pinMode(BTN_PIN, INPUT_PULLUP);
+  btnLast = digitalRead(BTN_PIN);
+
   SerialPort.println("All sensors ready.");
 }
 
 void loop() {
+  // Button is checked on EVERY pass, before the sample-rate gate
+  pollButton();
+
   // Run the body on a fixed ~33 ms schedule
   if (millis() - lastSample < SAMPLE_PERIOD_MS) return;
   lastSample = millis();
@@ -101,6 +135,10 @@ void loop() {
   int hallState = !digitalRead(HALL_PIN);   // active-low: invert so present = 1
   uint32_t cuts = cutCount;
 
+  // --- Put the mark on exactly one row ---
+  int mark = markPending ? 1 : 0;
+  markPending = false;
+
   // --- Output ---
   SerialPort.print(millis());
   SerialPort.print(" ms | Dist:");
@@ -114,12 +152,21 @@ void loop() {
   SerialPort.print(" m/s^2 | Magnet:");
   SerialPort.print(hallState);
   SerialPort.print(" | Cuts:");
-  SerialPort.println(cuts);
+  SerialPort.print(cuts);
+  SerialPort.print(" | Mark:");
+  SerialPort.print(mark);
+  SerialPort.print(" | Marks:");
+  SerialPort.println(markCount);
 
   if (cuts != lastPrintedCount) {
     SerialPort.print(">>> CUT #");
     SerialPort.println(cuts);
     lastPrintedCount = cuts;
+  }
+
+  if (mark) {
+    SerialPort.print(">>> MARK #");
+    SerialPort.println(markCount);
   }
 }
 
