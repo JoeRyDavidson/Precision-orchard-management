@@ -3,9 +3,11 @@
 This repository contains assorted files used to support precision orchard management research projects:
 
 - precisionBag.m is example Matlab code for extracting and processing GNSS data from rosbag files
-- gnss_sd_logger.ino is a program for recording RTK GPS data using a portable, microcontroller-based system; the adopted architecture is described in further detail below
+- gnss_sd_logger.ino is a program for recording RTK GNSS data to a microSD card using a portable, microcontroller-based system; the architecture implemented for the GNSS system is described in further detail below
+- Sender_TOF_IMU uses ESP-NOW to wirelessly transmit TOF and IMU data to the Receiving microcontroller. Receiver_GNSS_TOF_IMU receives the sensor data, temporally synchronizes it with GNSS data, and then logs all data to a microSD card 
+_____________________________________________________________________________________________________________________________
 
-We developed a small, portable system for recording RTK GPS data in agricultural environments.
+We developed a small, portable system for recording RTK GNSS data in agricultural environments.
 
 The system's architecture is shown in the following block diagram.
 
